@@ -14,9 +14,20 @@ type jwt struct {
 	lifetime time.Duration
 }
 
-func (s *jwt) validate() error {
+func (s *jwt) validateInput() error {
 
-	// TODO: implement
+	var errs []error
+	
+	if len(s.secret) < 16 {
+		errs = append(errs, errors.New("jwt secret must be at least 16 characters, ideally >= 32"))
+	}
+	if s.lifetime <= 0 {
+		errs = append(errs, errors.New("jwt lifetime must be positive"))
+	}
+
+	if len(errs) > 0 {
+		return errors.Join(errs...)
+	}
 
 	return nil
 }

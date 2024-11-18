@@ -2,6 +2,7 @@ package guarddoggo
 
 import (
 	"errors"
+	"fmt"
 	"time"
 )
 
@@ -19,13 +20,13 @@ func Adopt() *doggo {
 func (d *doggo) TrainedInJWT(secret string, issuer string, lifetime time.Duration) (*doggo, error) {
 
 	c := jwt{
-		secret: secret,
-		issuer: issuer,
+		secret:   secret,
+		issuer:   issuer,
 		lifetime: lifetime,
 	}
 
-	if err := c.validate(); err != nil {
-		return d, errors.New("couldn't give doggo jwt capabilites: " + err.Error())
+	if err := c.validateInput(); err != nil {
+		return d, fmt.Errorf("couldn't give doggo jwt capabilites: %w", err)
 	}
 
 	d.jwt = &c
@@ -36,18 +37,19 @@ func (d *doggo) TrainedInRT(tokenSize int, lifetime time.Duration) (*doggo, erro
 
 	c := rt{
 		tokenSize: tokenSize,
-		lifetime: lifetime,
+		lifetime:  lifetime,
 	}
 
 	if err := c.validate(); err != nil {
-		return d, errors.New("couldn't give doggo rt capabilites: " + err.Error())
+		return d, fmt.Errorf("couldn't give doggo rt capabilites: %w", err)
 	}
-	d.rt = &c
 
+	d.rt = &c
 	return d, nil
 }
 
 func (d *doggo) JWT() (*jwt, error) {
+
 	if d.jwt == nil {
 		return nil, errors.New("this doggo hasn't undergone JWT training")
 	}
@@ -56,6 +58,7 @@ func (d *doggo) JWT() (*jwt, error) {
 }
 
 func (d *doggo) RT() (*rt, error) {
+	
 	if d.rt == nil {
 		return nil, errors.New("this doggo isn't RT certified")
 	}
