@@ -2,6 +2,7 @@ package guarddoggo
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
 	gjwt "github.com/golang-jwt/jwt/v5"
@@ -20,8 +21,11 @@ func (s *jwt) validate() error {
 	return nil
 }
 
-// Command the doggo to fetch you a brand new jwt
-func (s *jwt) Fetch(userID string) (string, error) {
+// Command the doggo to fetch you a brand new jwt.
+func (s *jwt) Fetch(userID string) (signedToken string, err error) {
+
+	// TODO: consider the best format for userID or leave unopinionated string
+
 	claims := gjwt.RegisteredClaims{
 		Issuer:    s.issuer,
 		IssuedAt:  gjwt.NewNumericDate(time.Now().UTC()),
@@ -33,10 +37,34 @@ func (s *jwt) Fetch(userID string) (string, error) {
 
 	// TODO: Asymmetric option
 
-	signedToken, err := token.SignedString([]byte(s.secret))
+	signedToken, err = token.SignedString([]byte(s.secret))
 	if err != nil {
 		return "", errors.New("failed to sign token: " + err.Error())
 	}
 
 	return signedToken, nil
+}
+
+// Let the doggo sniff out anything wrong with the validity of a jwt.
+func (s *jwt) Sniff(tokenStr string) (subject string, err error) {
+	token, err := gjwt.ParseWithClaims(tokenStr, &gjwt.RegisteredClaims{}, func(token *gjwt.Token) (interface{}, error) {
+
+		if token.Method != gjwt.SigningMethodHS256 {
+			return nil, fmt.Errorf("wrong signing method: %v", token.Header["alg"])
+		}
+
+		// TODO: Assymetric option
+
+		return []byte(s.secret), nil
+	})
+	if err != nil {
+		return "", err
+	}
+
+	subject, err = token.Claims.GetSubject()
+	if err != nil {
+		return "", errors.New("failed to extract the 'subject' claim from the jwt" + err.Error())
+	}
+
+	return subject, nil
 }
