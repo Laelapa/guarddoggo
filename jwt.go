@@ -14,24 +14,6 @@ type jwt struct {
 	lifetime time.Duration // e.g. 7 * 24 * time.Hour for a week
 }
 
-func (s *jwt) validateInput() error {
-
-	var errs []error
-	
-	if len(s.secret) < 16 {
-		errs = append(errs, errors.New("jwt secret must be at least 16 characters, ideally >= 32"))
-	}
-	if s.lifetime <= 0 {
-		errs = append(errs, errors.New("jwt lifetime must be a positive value"))
-	}
-
-	if len(errs) > 0 {
-		return errors.Join(errs...)
-	}
-
-	return nil
-}
-
 // Command the doggo to fetch you a brand new jwt.
 func (s *jwt) Fetch(userID string) (signedToken string, err error) {
 
@@ -78,4 +60,22 @@ func (s *jwt) Sniff(tokenStr string) (subject string, err error) {
 	}
 
 	return subject, nil
+}
+
+func (s *jwt) validateConfig() error {
+
+	var errs []error
+
+	if len(s.secret) < 16 {
+		errs = append(errs, errors.New("jwt secret must be at least 16 characters, ideally >= 32"))
+	}
+	if s.lifetime <= 0 {
+		errs = append(errs, errors.New("jwt lifetime must be a positive value"))
+	}
+
+	if len(errs) > 0 {
+		return errors.Join(errs...)
+	}
+
+	return nil
 }

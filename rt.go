@@ -1,6 +1,8 @@
 package guarddoggo
 
 import (
+	"crypto/rand"
+	"encoding/hex"
 	"errors"
 	"time"
 )
@@ -10,7 +12,21 @@ type rt struct {
 	lifetime  time.Duration // e.g. 7 * 24 * time.Hour for a week
 }
 
-func (s *rt) validate() error {
+// Command the doggo to go fetch you a brand new refresh token.
+func (s *rt) Fetch() (rt string, err error) {
+
+	rtBytes := make([]byte, s.tokenSize)
+
+	_, err = rand.Read(rtBytes)
+	if err != nil {
+		return "", errors.New("error while generating refresh token: " + err.Error())
+	}
+
+	rt = hex.EncodeToString(rtBytes)
+	return rt, nil
+}
+
+func (s *rt) validateConfig() error {
 
 	var errs []error
 
