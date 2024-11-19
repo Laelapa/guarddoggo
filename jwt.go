@@ -11,7 +11,7 @@ import (
 type jwt struct {
 	secret   string
 	issuer   string
-	lifetime time.Duration
+	lifetime time.Duration // e.g. 7 * 24 * time.Hour for a week
 }
 
 func (s *jwt) validateInput() error {
@@ -22,7 +22,7 @@ func (s *jwt) validateInput() error {
 		errs = append(errs, errors.New("jwt secret must be at least 16 characters, ideally >= 32"))
 	}
 	if s.lifetime <= 0 {
-		errs = append(errs, errors.New("jwt lifetime must be positive"))
+		errs = append(errs, errors.New("jwt lifetime must be a positive value"))
 	}
 
 	if len(errs) > 0 {

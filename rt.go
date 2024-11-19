@@ -1,6 +1,9 @@
 package guarddoggo
 
-import "time"
+import (
+	"errors"
+	"time"
+)
 
 type rt struct {
 	tokenSize int           // in bytes, ideally >= 32
@@ -9,7 +12,18 @@ type rt struct {
 
 func (s *rt) validate() error {
 
-	// TODO: implement
+	var errs []error
+
+	if s.tokenSize < 16 {
+		errs = append(errs, errors.New("the refresh token length should be at least 16 bytes, ideally 32 bytes or larger"))
+	}
+	if s.lifetime <= 0 {
+		errs = append(errs, errors.New("refresh token lifetime must be a positive value"))
+	}
+
+	if len(errs) > 0 {
+		return errors.Join(errs...)
+	}
 
 	return nil
 }
