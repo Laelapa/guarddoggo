@@ -1,5 +1,5 @@
 # guarddoggo
-A faithful Go library for JWT and refresh token management. Keeps your auth tokens on a tight leash.
+A faithful Go package for JWT and refresh token management. Keeps your auth tokens on a tight leash.
 
 > [!IMPORTANT]
 > This is a **work in progress**. No functionality implemented yet.

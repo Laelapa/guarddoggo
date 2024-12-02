@@ -1,3 +1,6 @@
+// Package guarddoggo provides functions to easily work with jwt and refresh tokens.
+// Provides only basic functionality such as token creation and validation.
+// Preconfigured with basic defaults that should be good for personal/hobby projects.
 package guarddoggo
 
 import (
@@ -17,6 +20,7 @@ func Adopt() *doggo {
 }
 
 // Train your doggo to fetch fresh JWTs and sniff out rotten ones.
+// If your instructions to the dog trainer make no sense you might get an error back, as well as your untrained doggo.
 func (d *doggo) TrainedInJWT(secret string, issuer string, lifetime time.Duration) (*doggo, error) {
 
 	c := jwt{
@@ -33,6 +37,8 @@ func (d *doggo) TrainedInJWT(secret string, issuer string, lifetime time.Duratio
 	return d, nil
 }
 
+// Train your doggo to fetch fresh refresh tokens.
+// If your instructions to the dog trainer are nonsensical you'll get returned an error along with your untrained doggo.
 func (d *doggo) TrainedInRT(tokenSize int, lifetime time.Duration) (*doggo, error) {
 
 	c := rt{
