@@ -8,11 +8,14 @@ import (
 )
 
 type rt struct {
-	tokenSize int           // in bytes, ideally >= 32
-	lifetime  time.Duration // e.g. 7 * 24 * time.Hour for a week
+	// tokenSize determines how many bytes of randomness to fetch (min 16, recommended 32+)
+	tokenSize int
+	// lifetime determines how long the refresh token should remain valid, e.g. 7 * 24 * time.Hour for a week
+	lifetime time.Duration
 }
 
-// Command the doggo to go fetch you a brand new refresh token.
+// Fetch commands your trained doggo to fetch you a brand new refresh token.
+// If something goes wrong, your doggo will fetch you the error.
 func (s *rt) Fetch() (rt string, err error) {
 
 	rtBytes := make([]byte, s.tokenSize)
@@ -26,6 +29,8 @@ func (s *rt) Fetch() (rt string, err error) {
 	return rt, nil
 }
 
+// validateConfig ensures your doggo's RT training parameters are reasonable.
+// Checks for minimum token size and positive lifetime values.
 func (s *rt) validateConfig() error {
 
 	var errs []error

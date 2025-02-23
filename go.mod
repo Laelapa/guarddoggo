@@ -1,4 +1,4 @@
-module github.com/DemetriusPapas/guarddoggo
+module github.com/Laelapa/guarddoggo
 
 go 1.23.1
 

@@ -14,7 +14,9 @@ type jwt struct {
 	lifetime time.Duration // e.g. 7 * 24 * time.Hour for a week
 }
 
-// Command the doggo to fetch you a brand new jwt.
+// Fetch commands your trained doggo to go fetch you a new JWT.
+// Give it a userID and it'll return a signed token ready for use.
+// If something goes wrong, your doggo will whimper back an error.
 func (s *jwt) Fetch(userID string) (signedToken string, err error) {
 
 	// TODO: consider the best format for userID or leave unopinionated string
@@ -38,7 +40,9 @@ func (s *jwt) Fetch(userID string) (signedToken string, err error) {
 	return signedToken, nil
 }
 
-// Let the doggo sniff out anything wrong with the validity of a jwt.
+// Sniff lets your doggo inspect a JWT token for validity.
+// If the token is valid, it'll retrieve the subject (userID) for you.
+// If something smells fishy, your doggo will bark back an error.
 func (s *jwt) Sniff(tokenStr string) (subject string, err error) {
 	token, err := gjwt.ParseWithClaims(tokenStr, &gjwt.RegisteredClaims{}, func(token *gjwt.Token) (interface{}, error) {
 
@@ -62,6 +66,8 @@ func (s *jwt) Sniff(tokenStr string) (subject string, err error) {
 	return subject, nil
 }
 
+// validateConfig makes sure your doggo's JWT training parameters make sense.
+// Checks for proper secret length and positive lifetime values.
 func (s *jwt) validateConfig() error {
 
 	var errs []error
