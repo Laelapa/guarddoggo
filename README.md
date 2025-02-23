@@ -14,21 +14,26 @@ go get github.com/Laelapa/guarddoggo
 ```
 
 ## 🐾 Quick Start
+
+Adopt your very own authentication guard doggo:
 ```go
-// Adopt your very own authentication guard doggo
+
 doggo := guarddoggo.Adopt()
 
 // Train it in JWT handling
 doggo, err := doggo.TrainedInJWT(
     "your-secret-key-here",
     "your-app-name",
-    24*time.Hour, // Token lifetime
+    24*time.Hour, // example of a token lifetime
 )
 if err != nil {
     // Handle training error
 }
+```
 
-// Train it in refresh token generation
+Train it in refresh token generation:
+```go
+
 doggo, err = doggo.TrainedInRT(
     32,           // Token size in bytes
     7*24*time.Hour, // Token lifetime
@@ -36,20 +41,26 @@ doggo, err = doggo.TrainedInRT(
 if err != nil {
     // Handle training error
 }
+```
 
-// Command it to fetch you a fresh JWT
+Command it to fetch you a fresh JWT:
+```go
 token, err := doggo.JWT().Fetch("user123")
 if err != nil {
     // Handle token creation error
 }
+```
 
-// Have it sniff out invalid tokens
+Have it sniff out invalid tokens:
+```go
 userID, err := doggo.JWT().Sniff(token)
 if err != nil {
     // Handle invalid token error
 }
+```
 
-// Command it to fetch you a new refresh token
+Command it to fetch you a new refresh token:
+```go
 refreshToken, err := doggo.RT().Fetch()
 if err != nil {
     // Handle refresh token creation error
