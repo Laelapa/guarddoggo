@@ -17,10 +17,11 @@ go get github.com/Laelapa/guarddoggo
 
 Adopt your very own authentication guard doggo:
 ```go
-
 doggo := guarddoggo.Adopt()
+```
 
-// Train it in JWT handling
+Train it in JWT handling:
+```go
 doggo, err := doggo.TrainedInJWT(
     "your-secret-key-here",
     "your-app-name",
@@ -33,7 +34,6 @@ if err != nil {
 
 Train it in refresh token generation:
 ```go
-
 doggo, err = doggo.TrainedInRT(
     32,           // Token size in bytes
     7*24*time.Hour, // Token lifetime
