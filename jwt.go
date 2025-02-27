@@ -20,6 +20,7 @@ type jwt struct {
 func (s *jwt) Fetch(userID string) (signedToken string, err error) {
 
 	// TODO: consider the best format for userID or leave unopinionated string
+	// TODO: custom claims
 
 	claims := gjwt.RegisteredClaims{
 		Issuer:    s.issuer,

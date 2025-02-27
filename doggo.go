@@ -1,6 +1,4 @@
-// Package guarddoggo is your friendly neighborhood auth companion.
-// It provides a playful wrapper around JWT and refresh token functionality,
-// perfect for keeping your authentication tokens on a tight leash.
+// Package guarddoggo is your friendly, faithful auth companion.
 package guarddoggo
 
 import (
@@ -9,14 +7,12 @@ import (
 	"time"
 )
 
-// doggo is your faithful companion in token management.
-// Can be trained in JWT creation/validation and refresh token generation.
 type doggo struct {
 	jwt *jwt
 	rt  *rt
 }
 
-// Adopt gets you a fresh new guard doggo from the authentication shelter.
+// Adopt gets you a new guard doggo from the authentication shelter.
 // Train it in JWT and/or RT capabilities to make it truly yours.
 func Adopt() *doggo {
 	return &doggo{}
@@ -24,7 +20,7 @@ func Adopt() *doggo {
 
 // TrainedInJWT teaches your doggo the art of JWT handling.
 // Provide a secret for signing, an issuer name, and how long the tokens should live.
-// Your doggo will learn to both create new JWTs and verify existing ones.
+// Your doggo will learn to both fetch you new JWTs and verify existing ones.
 func (d *doggo) TrainedInJWT(secret string, issuer string, lifetime time.Duration) (*doggo, error) {
 
 	c := jwt{
@@ -43,7 +39,7 @@ func (d *doggo) TrainedInJWT(secret string, issuer string, lifetime time.Duratio
 
 // TrainedInRT sends your doggo to refresh token training school.
 // Specify how big the tokens should be and how long they should last.
-// Your doggo will learn to generate cryptographically secure refresh tokens.
+// Your doggo will learn to bring you new refresh tokens right to your hand.
 func (d *doggo) TrainedInRT(tokenSize int, lifetime time.Duration) (*doggo, error) {
 
 	c := rt{
